@@ -1,40 +1,44 @@
-buildscript {
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath "org.flywaydb:flyway-core:11.12.0"
-		classpath "org.flywaydb:flyway-mysql:11.12.0"
-	}
-}
-
 plugins {
-	id 'java'
-	id "org.flywaydb.flyway" version "11.12.0"
+    id 'java'
+    id 'org.springframework.boot' version '3.5.5'
+    id 'io.spring.dependency-management' version '1.1.7'
+    id "org.flywaydb.flyway" version "11.12.0"
 }
 
 group = 'com.hritik'
 version = '0.0.1-SNAPSHOT'
-description = 'db migration project'
+description = 'auth microservice'
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(19)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(19)
+    }
 }
 
-repositories {
-	mavenCentral()
-}
+    repositories {
+        mavenCentral()
+    }
 
-dependencies {
-	runtimeOnly "com.mysql:mysql-connector-j:9.0.0"
-}
+    dependencies {
+        // JPA + Hibernate
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-flyway {
-	url = 'jdbc:mysql://localhost:3306/uber_review?serverTimezone=UTC&useSSL=false'
-	user = 'root'
-	password = System.getenv('DB_PASSWORD') ?: 'root'
-	schemas = ['uber_review']
-	locations = ['classpath:db/migration']
-}
+        // Flyway for DB migrations
+        implementation "org.flywaydb:flyway-core:11.12.0"
+        implementation "org.flywaydb:flyway-mysql:11.12.0"
+
+        // Database Driver
+        runtimeOnly "com.mysql:mysql-connector-j:9.0.0"
+
+        // Lombok for boilerplate reduction
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // Testing
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
