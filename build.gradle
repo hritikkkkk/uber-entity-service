@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.5.5'
     id 'io.spring.dependency-management' version '1.1.7'
     id "org.flywaydb.flyway" version "11.12.0"
+    id 'maven-publish'
 }
 
 group = 'com.hritik'
@@ -14,31 +15,45 @@ java {
         languageVersion = JavaLanguageVersion.of(19)
     }
 }
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 
     repositories {
-        mavenCentral()
+        maven {
+            url = uri('D:\\entity-service\\entity-service')
+        }
     }
+}
 
-    dependencies {
-        // JPA + Hibernate
-        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-        // Flyway for DB migrations
-        implementation "org.flywaydb:flyway-core:11.12.0"
-        implementation "org.flywaydb:flyway-mysql:11.12.0"
+repositories {
+    mavenCentral()
+}
 
-        // Database Driver
-        runtimeOnly "com.mysql:mysql-connector-j:9.0.0"
+dependencies {
+    // JPA + Hibernate
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-        // Lombok for boilerplate reduction
-        compileOnly 'org.projectlombok:lombok'
-        annotationProcessor 'org.projectlombok:lombok'
+    // Flyway for DB migrations
+    implementation "org.flywaydb:flyway-core:11.12.0"
+    implementation "org.flywaydb:flyway-mysql:11.12.0"
 
-        // Testing
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
-        testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    }
+    // Database Driver
+    runtimeOnly "com.mysql:mysql-connector-j:9.0.0"
 
-    tasks.named('test') {
-        useJUnitPlatform()
-    }
+    // Lombok for boilerplate reduction
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
