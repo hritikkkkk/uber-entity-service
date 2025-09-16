@@ -1,0 +1,40 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.flywaydb:flyway-core:11.12.0"
+		classpath "org.flywaydb:flyway-mysql:11.12.0"
+	}
+}
+
+plugins {
+	id 'java'
+	id "org.flywaydb.flyway" version "11.12.0"
+}
+
+group = 'com.hritik'
+version = '0.0.1-SNAPSHOT'
+description = 'db migration project'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(19)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	runtimeOnly "com.mysql:mysql-connector-j:9.0.0"
+}
+
+flyway {
+	url = 'jdbc:mysql://localhost:3306/uber_review?serverTimezone=UTC&useSSL=false'
+	user = 'root'
+	password = System.getenv('DB_PASSWORD') ?: 'root'
+	schemas = ['uber_review']
+	locations = ['classpath:db/migration']
+}
