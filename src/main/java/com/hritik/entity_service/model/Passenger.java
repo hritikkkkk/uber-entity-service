@@ -1,5 +1,6 @@
 package com.hritik.entity_service.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -30,4 +31,15 @@ public class Passenger extends BaseModel {
 
     @OneToMany(mappedBy = "passenger")
     private List<Booking> bookings = new ArrayList<>();
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean emailVerified = false;
+
+    @Column(nullable = false)
+    @Builder.Default
+    private Boolean enabled = false;  // Account is disabled until email verified
+
+    @OneToMany(mappedBy = "passenger", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<EmailVerificationToken> verificationTokens = new ArrayList<>();
 }
