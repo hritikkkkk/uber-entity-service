@@ -49,4 +49,11 @@ public class Driver extends BaseModel {
 
     private boolean isAvailable;
 
+
+    @Enumerated(value = EnumType.STRING)
+    private DriverApprovalStatus driverApprovalStatus;
+
+
+
+
 }

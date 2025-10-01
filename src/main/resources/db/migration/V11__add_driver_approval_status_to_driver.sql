@@ -1,0 +1,4 @@
+ALTER TABLE driver
+     ADD COLUMN driver_approval_status
+     ENUM('PENDING','ACCEPTED','REJECTED','TIMEOUT')
+     NOT NULL DEFAULT 'PENDING';
